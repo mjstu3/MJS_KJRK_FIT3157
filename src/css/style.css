@@ -1,0 +1,15 @@
+body, html {
+	font-family: 'Roboto', sans-serif;
+	color: #5a5a5a;
+}
+
+@font-face {
+    font-family: 'Hansief';
+    src: url(../fonts/Hansief.otf);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hansief';
+    text-transform: uppercase;
+    transition: all 0.5s;
+}
