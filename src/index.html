@@ -1,22 +1,43 @@
-<!DOCTYPE html>
-
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+    <title>Canvas Drawing App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+<body>
+	
+    <div id="app">
+  
+        <div class="accent accent-yellow"></div>
+        <div class="accent accent-blue"></div>
+        <div class="accent accent-red"></div>
+        <div class="middle">
+            <div class="toolbar">
+                <div class="title">
+                    <h1>JASPER JOHNS KIOSK</h1>
+                </div>
+                <div class="icon"><i class="fas fa-square"></i></div>
+                <div class="icon"><i class="fas fa-minus"></i></div>
+                <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                <div class="icon"><i class="fas fa-fill-drip"></i></div>
+                <div class="icon"><i class="fas fa-stamp"></i></div>
+                <div class="icon" data-mode="erase"><i class="fas fa-eraser"></i></div>
+                <div class="icon" data-action="undo"><i class="fas fa-undo"></i></div>
+                <div class="icon" data-action="redo"><i class="fas fa-redo"></i></div>
+                <div class="icon" data-action="delete"><i class="far fa-trash-alt"></i></div>
+                <div class="icon" data-action="save"><i class="far fa-save"></i></div>
+            
+            </div>
+            <div><canvas id="canvas" height="900" width="1800"></canvas></div>
+        </div>
+        <div class="accent accent-red"></div>
+        <div class="accent accent-blue"></div>
+        <div class="accent accent-yellow"></div>
         
-        <title>ART GALLERY KIOSK</title>
-
-        <link rel="icon" href="img/icon.png">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/style.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        
-
-    </body>
+    </div>
+  
+    <script type="text/javascript" src="js/script.js"></script>
+</body>
 </html>

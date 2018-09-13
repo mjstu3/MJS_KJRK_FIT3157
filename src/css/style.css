@@ -1,15 +1,85 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    user-select: none;
+}
+
 body, html {
 	font-family: 'Roboto', sans-serif;
-	color: #5a5a5a;
 }
 
 @font-face {
-    font-family: 'Hansief';
-    src: url(../fonts/Hansief.otf);
+    font-family: 'Hansief Rough';
+    src: url(../fonts/Hansief Rough.otf);
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Hansief';
+    font-family: 'Hansief Rough';
     text-transform: uppercase;
-    transition: all 0.5s;
 }
+
+h1{
+    color: #ffaaa5;
+    font-size: 3.6vw;
+}
+
+body {
+    background-color: gray;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1vw 1vw 0.5vw 95vw 0.5vw 1vw 1vw; 
+}
+
+.accent {
+    display: flex;
+    flex-direction: column;
+}
+
+.accent-yellow {  
+    background-color: #fffcce;
+}
+
+.accent-blue {
+    background-color: #cedcff;
+}
+
+.accent-red {
+    background-color: #ffced5;
+}
+
+.middle {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 10% 90%;
+}
+
+.toolbar {
+    display: grid;
+    grid-template-columns: 40% 6% 6% 6% 6% 6% 6% 6% 6% 6% 6%;
+    width: 97.5%;
+    height: 100%;
+    padding-left: 2.5%;
+    text-align: left;
+}
+
+.icon > i {
+    color: white;
+    text-decoration: none;
+    font-size: 3.6vw;
+}
+
+#canvas {
+    background-color: white;
+    background-image: url(../images/canvas.png);
+    background-size: cover;
+    touch-action: none;
+}
+
