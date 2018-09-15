@@ -5,6 +5,7 @@
     <title>Canvas Drawing App</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel='stylesheet' href='css/spectrum.css' />
 </head>
 <body>
 	
@@ -19,16 +20,43 @@
                     <h1>JASPER JOHNS KIOSK</h1>
                 </div>
                 <div class="toolbar" id="toolbar">
-                    <i class="icon fas fa-palette"></i>
-                    <i class="icon fas fa-align-justify"></i>
-                    <i class="icon fas fa-paint-brush active" data-mode="brush"></i>
-                    <i class="icon fas fa-fill-drip" data-mode="fill"></i>
-                    <i class="icon fas fa-stamp" data-mode="stamp"></i>
-                    <i class="icon fas fa-eraser" data-mode="erase"></i>
-                    <i class="icon fas fa-undo" data-action="undo"></i>
-                    <i class="icon fas fa-redo" data-action="redo"></i>
-                    <i class="icon far fa-trash-alt" data-action="delete"></i>
-                    <i class="icon far fa-save" data-action="save"></i>
+                    <div class="color" onclick="toggleColors()">
+                        <i id="iconColor" class="icon fas fa-square"></i>
+                        <div id="dropdownColor" class="dropdown-content">
+                            <input id="colorpicker"/>
+                        </div>
+                    </div>
+                    <div class="size" onclick="toggleSize()">
+                        <i id="iconSize" class="icon fas fa-align-justify"></i>
+                        <div id="dropdownSize" class="dropdown-content">
+                            <input id='sizeSlider' class="size-slider" type='range' value='20' max='400' min='1'/>
+                            <div id="sizeIndicator" class="size-indicator"></div>
+                        </div>
+                    </div>
+                    <div class="brush active">
+                        <i class="icon fas fa-paint-brush" data-mode="brush"></i>
+                    </div>
+                    <div class="fill">
+                        <i class="icon fas fa-fill-drip" data-mode="fill"></i>
+                    </div>
+                    <div class="stamp">
+                        <i class="icon fas fa-stamp" data-mode="stamp"></i>
+                    </div>
+                    <div class="erase">
+                        <i class="icon fas fa-eraser" data-mode="erase"></i>
+                    </div>
+                    <div class="undo">
+                        <i class="icon fas fa-undo" data-action="undo"></i>
+                    </div>
+                    <div class="redo">
+                        <i class="icon fas fa-redo" data-action="redo"></i>
+                    </div>
+                    <div class="delete">
+                        <i class="icon far fa-trash-alt" data-action="delete"></i>
+                    </div>
+                    <div class="save">
+                        <i class="icon far fa-save" data-action="save"></i>
+                    </div>
                 </div>
             </div>
             <div><canvas id="canvas" height="920" width="1840"></canvas></div>
@@ -39,6 +67,11 @@
         
     </div>
   
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src='js/spectrum.js'></script>
+    <script type="text/javascript" src='js/tools.js'></script>
+
+    
 </body>
 </html>

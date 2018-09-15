@@ -17,14 +17,11 @@ context.lineCap = "round";
 // Event listeners
 canvas.addEventListener( 'mousedown', draw );
 canvas.addEventListener( 'touchstart', draw );
-//window.addEventListener('load', resizeCanvas, false);
-//window.addEventListener('resize', resizeCanvas, false);
 window.addEventListener( 'mouseup', stop );
 window.addEventListener( 'touchend', stop );
+window.addEventListener( 'mousemove', setColor );
+window.addEventListener( 'mousemove', setSize );
 document.querySelector( '#toolbar' ).addEventListener( 'click', selectTool );
-
-
-console.log(document.querySelectorAll( '.icon' ));
 
 // Functions
 function clearCanvas() {
@@ -57,10 +54,9 @@ function draw( e ) {
 }
 
 function highlightButton( button ) {
-  var buttons = button.parentNode.querySelectorAll( 'i' );
-    console.log(buttons);
-  buttons.forEach( function( element ){ element.classList.remove( 'active' ) } );
-  button.classList.add( 'active' );
+    var buttons = button.parentNode.parentNode.querySelectorAll( 'div' );
+    buttons.forEach( function( element ){ element.classList.remove( 'active' ) } );
+    button.parentNode.classList.add( 'active' );
   
 }
 
@@ -83,7 +79,7 @@ function renderLine() {
   } else {
     context.globalCompositeOperation = 'source-over';
   }
-  
+  context.lineWidth = toolSize;
   context.stroke();
 }
 
@@ -95,7 +91,6 @@ function saveState() {
 }
 
 function selectTool( e ) {
-    console.log('ggg');
   if ( e.target === e.currentTarget ) return;
   if ( e.target.dataset.mode ) highlightButton( e.target );
   toolSize = e.target.dataset.size || toolSize;
@@ -123,11 +118,64 @@ function updateCanvas() {
   renderLine();
 }
 
-function resizeCanvas() {
-	var height = window.innerHeight * 900 / 1080;
-	var width = height * 2;
-	
-	canvas.style.width = width+'px';
-	canvas.style.height = height+'px';
+function toggleColors() {
+    document.getElementById("dropdownColor").classList.toggle("show");
+    if (document.getElementById("dropdownSize").classList.contains('show')) {
+        document.getElementById("dropdownSize").classList.toggle('show');
+    }
 }
+
+function toggleSize() {
+    document.getElementById("dropdownSize").classList.toggle("show");
+    if (document.getElementById("dropdownColor").classList.contains('show')) {
+        document.getElementById("dropdownColor").classList.toggle('show');
+    }
+}
+
+window.onmousedown = function(event) {
+    if (!event.target.matches('.icon') && !event.target.matches('.dropdown-content') && !event.target.matches('.size-slider') && !event.target.matches('.size-indicator')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.toggle('show');
+            }
+        }
+    }
+}
+
+function setColor() {
+    if (document.getElementById("dropdownColor").classList.contains("show")) {
+        toolColor = "rgb(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,")");
+        document.getElementById("iconColor").style.color = toolColor;
+        document.getElementById("sizeIndicator").style.backgroundColor = toolColor;
+    }
+}
+
+function setSize() {
+    if (document.getElementById("dropdownSize").classList.contains("show")) {
+        toolSize = document.getElementById("sizeSlider").value;
+        document.getElementById("sizeIndicator").style.height = toolSize.concat('px');
+        document.getElementById("sizeIndicator").style.width = toolSize.concat('px');
+    }
+}
+
+// jquery for spectrum color tool
+
+$(function(){
+
+    $("#colorpicker").spectrum({
+        color: "black",
+        flat: true,
+        showButtons: false,
+        containerClassName: 'palette'
+    });
+    $(".sp-picker-container").width(300);
+
+    $("#colorpicker").spectrum("set", "black");
+    
+    
+});
+
 

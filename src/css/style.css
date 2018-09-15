@@ -53,7 +53,7 @@ body {
 }
 
 .accent-red {
-    background-color: #ffced5;
+    background-color: #ffaaa5;
 }
 
 .middle {
@@ -78,19 +78,57 @@ body {
     grid-template-columns: 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw;
     justify-content: center;
     align-items: center;
-    transition: all 0.5s;
+    transition: all 0.2s;
+}
+
+.toolbar > div {
+    text-align: center;
 }
 
 .icon {
     padding: 0.5vh;
-    text-align: center;
     color: white;
     text-decoration: none;
     font-size: 3.6vw;
+    transition: all 0.2s;
 }
 
-.toolbar .active {
-    border: 3px solid #ffced5;
+#iconColor {
+    color: black;
+}
+
+.toolbar .active > .icon {
+    color: #ffaaa5;
+}
+
+.toolbar .color {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: grey;
+    z-index: 1;
+    margin-top: 15px;
+}
+
+.show {
+    display:block;
+}
+
+.size-slider {
+    width: 400px;
+    height: 40px;
+}
+
+#sizeIndicator {
+    background-color: black;
+    margin: 4px auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 }
 
 #canvas {
