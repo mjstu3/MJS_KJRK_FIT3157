@@ -21,7 +21,6 @@ h1, h2, h3, h4, h5, h6 {
 h1{
     color: #ffaaa5;
     font-size: 3.6vw;
-    padding-top: 5px;
 }
 
 body {
@@ -64,26 +63,34 @@ body {
     grid-template-rows: 10% 90%;
 }
 
-.toolbar {
+.header {
     display: grid;
-    grid-template-columns: 40vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+    grid-template-columns: 35vw 55vw;
     width: 97.5%;
     height: 100%;
     padding-left: 1vw;
     justify-content: center;
-    
+    align-items: center;
+}
+
+.toolbar {
+    display: grid;
+    grid-template-columns: 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw 5.5vw;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
 }
 
 .icon {
-    padding-top: 1vh;
+    padding: 0.5vh;
     text-align: center;
-}
-
-.icon > i {
     color: white;
     text-decoration: none;
     font-size: 3.6vw;
-    
+}
+
+.toolbar .active {
+    border: 3px solid #ffced5;
 }
 
 #canvas {

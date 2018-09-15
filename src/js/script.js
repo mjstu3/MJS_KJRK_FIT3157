@@ -21,13 +21,10 @@ canvas.addEventListener( 'touchstart', draw );
 //window.addEventListener('resize', resizeCanvas, false);
 window.addEventListener( 'mouseup', stop );
 window.addEventListener( 'touchend', stop );
-//document.querySelector( '#tools' ).addEventListener( 'click', selectTool );
-//document.querySelector( '#colors' ).addEventListener( 'click', selectTool );
+document.querySelector( '#toolbar' ).addEventListener( 'click', selectTool );
 
-console.log(canvas.width);
-console.log(canvas.height);
-console.log(canvas.offsetLeft);
-console.log(canvas.offsetTop);
+
+console.log(document.querySelectorAll( '.icon' ));
 
 // Functions
 function clearCanvas() {
@@ -58,12 +55,14 @@ function draw( e ) {
     updateCanvas();
   }
 }
-/*
+
 function highlightButton( button ) {
-  var buttons = button.parentNode.querySelectorAll( 'img' );
+  var buttons = button.parentNode.querySelectorAll( 'i' );
+    console.log(buttons);
   buttons.forEach( function( element ){ element.classList.remove( 'active' ) } );
   button.classList.add( 'active' );
-}*/
+  
+}
 
 function renderLine() {
   for ( var i = 0, length = linePoints.length; i < length; i++ ) {
@@ -94,17 +93,18 @@ function saveState() {
   if ( canvasState.length > 25 ) canvasState.length = 25;
   undoButton.classList.remove( 'disabled' );
 }
-/*
+
 function selectTool( e ) {
+    console.log('ggg');
   if ( e.target === e.currentTarget ) return;
-  if ( !e.target.dataset.action ) highlightButton( e.target );
+  if ( e.target.dataset.mode ) highlightButton( e.target );
   toolSize = e.target.dataset.size || toolSize;
   toolMode = e.target.dataset.mode || toolMode;
   toolColor = e.target.dataset.color || toolColor;
   if ( e.target === undoButton ) undoState();
   if ( e.target.dataset.action == 'delete' ) clearCanvas();
 }
-*/
+
 function stop( e ) {
   if ( e.which === 1 || e.type === 'touchend') {
     window.removeEventListener( 'mousemove', draw );
