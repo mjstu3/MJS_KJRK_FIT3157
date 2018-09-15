@@ -30,6 +30,7 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 #app {
@@ -59,6 +60,7 @@ body {
 .middle {
     display: grid;
     justify-content: center;
+    overflow: hidden;
     grid-template-rows: 10% 90%;
 }
 
