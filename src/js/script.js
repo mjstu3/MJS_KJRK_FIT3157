@@ -159,6 +159,11 @@ function toggleTexture() {
     closeOtherDropdowns("dropdownTexture");
 }
 
+function toggleStamp() {
+    document.getElementById("dropdownStamp").classList.toggle("show");
+    closeOtherDropdowns("dropdownStamp");
+}
+
 function closeOtherDropdowns(current) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;

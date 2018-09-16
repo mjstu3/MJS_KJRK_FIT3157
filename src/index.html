@@ -49,8 +49,16 @@
                     <div class="fill">
                         <i class="icon fas fa-fill-drip" data-mode="fill"></i>
                     </div>
-                    <div class="stamp">
+                    <div class="stamp active" onclick="toggleStamp()">
                         <i class="icon fas fa-stamp" data-mode="stamp"></i>
+                        <div id="dropdownStamp" class="dropdown-content dropdown-stamp">
+                            <div class="grid-stamp">
+                                <i class="icon fas fa-keyboard"></i>
+                                <i class="icon fas fa-tint"></i>
+                                <i class="icon fas fa-flag"></i>
+                            </div> 
+                        </div>
+                                                
                     </div>
                     <div class="erase">
                         <i class="icon fas fa-eraser" data-mode="erase"></i>

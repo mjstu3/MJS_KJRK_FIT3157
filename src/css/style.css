@@ -140,6 +140,15 @@ body {
     align-content: center;
 }
 
+.grid-stamp {
+    display: grid;
+    padding-top: 15px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px;
+    justify-content: center;
+    align-content: center;
+}
+
 #canvas {
     background-color: white;
     background-image: url(../images/canvas.png);
