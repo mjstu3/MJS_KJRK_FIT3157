@@ -50,15 +50,22 @@ function draw(e) {
             mouseDrag = e.type === 'touchmove';
         }
         if (e.type === 'mousedown' || e.type === 'touchstart') saveState();
-        linePoints.push( {x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: toolColor} );
+        linePoints.push( {x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: toolColor, texture: brushType} );
         updateCanvas();
     }
 }
 
-function highlightButton(button) {
-    var buttons = button.parentNode.parentNode.querySelectorAll('div');
-    buttons.forEach(function(element){ element.classList.remove('active')});
-    button.parentNode.classList.add('active');
+function stop(e) {
+    if (e.which === 1 || e.type === 'touchend') {
+        window.removeEventListener('mousemove', draw);
+        window.removeEventListener('touchmove', draw);
+    }
+}
+
+function updateCanvas() {
+    context.clearRect( 0, 0, canvas.width, canvas.height );
+    context.putImageData( canvasState[0], 0, 0 );
+    renderLine();
 }
 
 function renderLine() {
@@ -68,10 +75,24 @@ function renderLine() {
             context.beginPath();
             context.lineWidth = linePoints[i].width;
             context.strokeStyle = linePoints[i].color;
-            context.moveTo( linePoints[i].x, linePoints[i].y );
-            context.lineTo( linePoints[i].x + 0.5, linePoints[i].y + 0.5 );
+            if (linePoints[i].texture == 'blur') {
+                textureBlur(i);
+            }
+            if (linePoints[i].texture == 'spray') {
+                textureSpray(i);
+            } else {
+                context.moveTo( linePoints[i].x, linePoints[i].y );
+                context.lineTo( linePoints[i].x + 0.5, linePoints[i].y + 0.5 );
+            }
         } else {
-            context.lineTo( linePoints[i].x, linePoints[i].y );
+            if (linePoints[i].texture == 'blur') {
+                textureBlur(i);
+            }
+            if (linePoints[i].texture == 'spray') {
+                textureSpray(i);
+            } else {
+                context.lineTo( linePoints[i].x, linePoints[i].y );
+            }
         }
     }
 
@@ -86,33 +107,9 @@ function renderLine() {
 
 function saveState() {
     canvasState.unshift( context.getImageData( 0, 0, canvas.width, canvas.height ) );
-    console.log(canvasState[0]);
     linePoints = [];
     if ( canvasState.length > 25 ) canvasState.length = 25;
     redoBuffer = [];
-}
-
-function selectTool(e) {
-    if (e.target === e.currentTarget) return;
-    if (e.target.dataset.mode) highlightButton(e.target);
-    toolSize = e.target.dataset.size || toolSize;
-    toolMode = e.target.dataset.mode || toolMode;
-    toolColor = e.target.dataset.color || toolColor;
-    if (e.target === undoButton) undoState();
-    if (e.target === redoButton) redoState();
-    if (e.target.dataset.action == 'delete') clearCanvas();
-}
-
-function selectTexture(e) {
-    brushType = e.target.dataset.texture || brushType;
-    console.log(brushType);
-}
-
-function stop(e) {
-    if (e.which === 1 || e.type === 'touchend') {
-        window.removeEventListener('mousemove', draw);
-        window.removeEventListener('touchmove', draw);
-    }
 }
 
 function undoState() {
@@ -138,10 +135,26 @@ function redoState() {
     }
 }
 
-function updateCanvas() {
-    context.clearRect( 0, 0, canvas.width, canvas.height );
-    context.putImageData( canvasState[0], 0, 0 );
-    renderLine();
+function selectTool(e) {
+    if (e.target === e.currentTarget) return;
+    if (e.target.dataset.mode) highlightButton(e.target);
+    toolSize = e.target.dataset.size || toolSize;
+    toolMode = e.target.dataset.mode || toolMode;
+    toolColor = e.target.dataset.color || toolColor;
+    if (e.target === undoButton) undoState();
+    if (e.target === redoButton) redoState();
+    if (e.target.dataset.action == 'delete') clearCanvas();
+}
+
+function selectTexture(e) {
+    brushType = e.target.dataset.texture || brushType;
+    document.getElementById("iconTexture").className = e.target.classList;
+}
+
+function highlightButton(button) {
+    var buttons = button.parentNode.parentNode.querySelectorAll('div');
+    buttons.forEach(function(element){ element.classList.remove('active')});
+    button.parentNode.classList.add('active');
 }
 
 function toggleColors() {
@@ -205,15 +218,52 @@ function setSize() {
 }
 
 function distanceBetween(p1, p2) {
-  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+    return Math.sqrt(Math.pow(p2[0] - p1[0], 2) + Math.pow(p2[1] - p1[1], 2));
 }
 
 function angleBetween(p1, p2) {
-  return Math.atan2( p2.x - p1.x, p2.y - p1.y );
+    return Math.atan2( p2[0] - p1[0], p2[1] - p1[1] );
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function getRandomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function textureBlur(i) {
+    var x = linePoints[i].x;
+    var y = linePoints[i].y;
+    var currentPoint = [x, y];
+    var lastPoint;
+    if (linePoints[i-1] == null) {
+        lastPoint = currentPoint;
+    } else {
+        lastPoint = [linePoints[i-1].x, linePoints[i-1].y];
+    }
+    var dist = distanceBetween(lastPoint, currentPoint);
+    var angle = angleBetween(lastPoint, currentPoint);
+
+    for (var j = 0; j < dist; j+=8) {
+        x = lastPoint[0] + (Math.sin(angle) * j);
+        y = lastPoint[1] + (Math.cos(angle) * j);
+        var radgrad = context.createRadialGradient(x,y,toolSize/2,x,y,toolSize);
+        radgrad.addColorStop(0, toolColor);
+        radgrad.addColorStop(0.5, "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",0.5)"));
+        radgrad.addColorStop(1, "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",0)"));
+        context.fillStyle = radgrad;
+        context.fillRect(x-toolSize, y-toolSize, toolSize*2, toolSize*2);
+    }
+}
+
+function textureSpray(i) {
+    var x = linePoints[i].x;
+    var y = linePoints[i].y;
+    var density = toolSize*2;
+    for (var j = density; j--; ) {
+        var angle = getRandomFloat(0, Math.PI*2);
+        var radius = getRandomFloat(0, toolSize);
+        context.fillStyle = toolColor;
+        context.fillRect(x + radius * Math.cos(angle), y + radius * Math.sin(angle), 1, 1);
+    }
 }
 
 // jquery for spectrum color tool
