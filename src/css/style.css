@@ -9,12 +9,12 @@ body, html {
 }
 
 @font-face {
-    font-family: 'Hansief Rough';
-    src: url(../fonts/Hansief Rough.otf);
+    font-family: 'Hansief';
+    src: url(../fonts/Hansief.otf);
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Hansief Rough';
+    font-family: 'Hansief';
     text-transform: uppercase;
 }
 
@@ -129,6 +129,15 @@ body {
     width: 20px;
     height: 20px;
     border-radius: 50%;
+}
+
+.grid-texture {
+    display: grid;
+    padding-top: 15px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px;
+    justify-content: center;
+    align-content: center;
 }
 
 #canvas {

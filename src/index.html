@@ -33,8 +33,18 @@
                             <div id="sizeIndicator" class="size-indicator"></div>
                         </div>
                     </div>
-                    <div class="brush active">
-                        <i class="icon fas fa-paint-brush" data-mode="brush"></i>
+                    <div class="texture active" onclick="toggleTexture()">
+                        <i id="iconTexture" class="icon fas fa-paint-brush" data-mode="brush"></i>
+                        <div id="dropdownTexture" class="dropdown-content dropdown-texture">
+                            <div class="grid-texture">
+                                <i class="icon fas fa-paint-brush" data-texture="normal"></i>
+                                <i class="icon fas fa-brush" data-texture="brush"></i>
+                                <i class="icon fas fa-paint-roller" data-texture="roller"></i>
+                                <i class="icon fas fa-spray-can" data-texture="spray"></i>
+                                <i class="icon fas fa-star-of-life" data-texture="fur"></i>
+                                <i class="icon fas fa-hand-paper" data-texture="blur"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="fill">
                         <i class="icon fas fa-fill-drip" data-mode="fill"></i>

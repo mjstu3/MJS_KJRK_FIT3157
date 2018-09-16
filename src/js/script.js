@@ -1,14 +1,15 @@
 // Variable initialisation
-var canvas = document.querySelector( '#canvas' );
-var context = canvas.getContext( '2d' );
+var canvas = document.querySelector('#canvas');
+var context = canvas.getContext('2d');
 var linePoints = [];
-var toolMode = 'draw'
+var toolMode = 'draw';
 var toolSize = 20;
-var toolColor = '#000000'
+var toolColor = '#000000';
+var brushType = 'normal';
 var canvasState = [];
 var redoBuffer = [];
-var undoButton = document.querySelector( '[data-action=undo]' );
-var redoButton = document.querySelector( '[data-action=redo]' );
+var undoButton = document.querySelector('[data-action=undo]');
+var redoButton = document.querySelector('[data-action=redo]');
 
 // Defaults
 context.strokeStyle = "#000000";
@@ -17,47 +18,47 @@ context.lineJoin = "round";
 context.lineCap = "round";
 
 // Event listeners
-canvas.addEventListener( 'mousedown', draw );
-canvas.addEventListener( 'touchstart', draw );
-window.addEventListener( 'mouseup', stop );
-window.addEventListener( 'touchend', stop );
-window.addEventListener( 'mousemove', setColor );
-window.addEventListener( 'mousemove', setSize );
-document.querySelector( '#toolbar' ).addEventListener( 'click', selectTool );
+canvas.addEventListener('mousedown', draw);
+canvas.addEventListener('touchstart', draw);
+window.addEventListener('mouseup', stop);
+window.addEventListener('touchend', stop);
+window.addEventListener('mousemove', setColor);
+window.addEventListener('mousemove', setSize);
+document.querySelector('#toolbar').addEventListener('click', selectTool);
+document.querySelector('#dropdownTexture').addEventListener('click', selectTexture);
 
 // Functions
 function clearCanvas() {
     var result = confirm( 'Are you sure you want to delete the picture?' );
-    if ( result ) {
-        context.clearRect( 0, 0, canvas.width, canvas.height );
+    if (result) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
         canvasState.length = 0;
         undoButton.classList.add('disabled');
     }
 }
 
-function draw( e ) {
-    if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
-        window.addEventListener( 'mousemove', draw );
-        window.addEventListener( 'touchmove', draw );
+function draw(e) {
+    if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
+        window.addEventListener('mousemove', draw);
+        window.addEventListener('touchmove', draw);
         var mouseX = e.pageX - canvas.offsetLeft;
         var mouseY = e.pageY - canvas.offsetTop;
         var mouseDrag = e.type === 'mousemove';
-        if ( e.type === 'touchstart' || e.type === 'touchmove' ) {
+        if (e.type === 'touchstart' || e.type === 'touchmove') {
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
             mouseY = e.touches[0].pageY - canvas.offsetTop;
             mouseDrag = e.type === 'touchmove';
         }
-        if ( e.type === 'mousedown' || e.type === 'touchstart') saveState();
-        linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: toolColor } );
+        if (e.type === 'mousedown' || e.type === 'touchstart') saveState();
+        linePoints.push( {x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: toolColor} );
         updateCanvas();
     }
 }
 
-function highlightButton( button ) {
-    var buttons = button.parentNode.parentNode.querySelectorAll( 'div' );
-    buttons.forEach( function( element ){ element.classList.remove( 'active' ) } );
-    button.parentNode.classList.add( 'active' );
-  
+function highlightButton(button) {
+    var buttons = button.parentNode.parentNode.querySelectorAll('div');
+    buttons.forEach(function(element){ element.classList.remove('active')});
+    button.parentNode.classList.add('active');
 }
 
 function renderLine() {
@@ -91,21 +92,26 @@ function saveState() {
     redoBuffer = [];
 }
 
-function selectTool( e ) {
-    if ( e.target === e.currentTarget ) return;
-    if ( e.target.dataset.mode ) highlightButton( e.target );
+function selectTool(e) {
+    if (e.target === e.currentTarget) return;
+    if (e.target.dataset.mode) highlightButton(e.target);
     toolSize = e.target.dataset.size || toolSize;
     toolMode = e.target.dataset.mode || toolMode;
     toolColor = e.target.dataset.color || toolColor;
-    if ( e.target === undoButton ) undoState();
-    if ( e.target === redoButton ) redoState();
-    if ( e.target.dataset.action == 'delete' ) clearCanvas();
+    if (e.target === undoButton) undoState();
+    if (e.target === redoButton) redoState();
+    if (e.target.dataset.action == 'delete') clearCanvas();
 }
 
-function stop( e ) {
-    if ( e.which === 1 || e.type === 'touchend') {
-        window.removeEventListener( 'mousemove', draw );
-        window.removeEventListener( 'touchmove', draw );
+function selectTexture(e) {
+    brushType = e.target.dataset.texture || brushType;
+    console.log(brushType);
+}
+
+function stop(e) {
+    if (e.which === 1 || e.type === 'touchend') {
+        window.removeEventListener('mousemove', draw);
+        window.removeEventListener('touchmove', draw);
     }
 }
 
@@ -140,23 +146,25 @@ function updateCanvas() {
 
 function toggleColors() {
     document.getElementById("dropdownColor").classList.toggle("show");
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show') && openDropdown.id !== 'dropdownColor') {
-            openDropdown.classList.toggle('show');
-        }
-    }
+    closeOtherDropdowns("dropdownColor");
 }
 
 function toggleSize() {
     document.getElementById("dropdownSize").classList.toggle("show");
+    closeOtherDropdowns("dropdownSize");
+}
+
+function toggleTexture() {
+    document.getElementById("dropdownTexture").classList.toggle("show");
+    closeOtherDropdowns("dropdownTexture");
+}
+
+function closeOtherDropdowns(current) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
         var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show') && openDropdown.id !== 'dropdownSize') {
+        if (openDropdown.classList.contains('show') && openDropdown.id !== current) {
             openDropdown.classList.toggle('show');
         }
     }
@@ -189,6 +197,18 @@ function setSize() {
         document.getElementById("sizeIndicator").style.height = toolSize.concat('px');
         document.getElementById("sizeIndicator").style.width = toolSize.concat('px');
     }
+}
+
+function distanceBetween(p1, p2) {
+  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+}
+
+function angleBetween(p1, p2) {
+  return Math.atan2( p2.x - p1.x, p2.y - p1.y );
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // jquery for spectrum color tool
