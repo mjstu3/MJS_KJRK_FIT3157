@@ -30,9 +30,12 @@ window.addEventListener('mouseup', stop);
 window.addEventListener('touchend', stop);
 document.querySelector('#toolbar').addEventListener('click', selectTool);
 window.addEventListener('mousemove', setToolColor);
+window.addEventListener('touchmove', setToolColor);
 window.addEventListener('mousemove', setToolSize);
+window.addEventListener('touchmove', setToolSize);
 document.querySelector('#dropdownTexture').addEventListener('click', setToolTexture);
 document.querySelector('#dropdownStamp').addEventListener('click', setToolStamp);
+setSISize()
 
 // Functions
 function clearCanvas() {
@@ -65,8 +68,6 @@ function draw(e) {
                 context.globalCompositeOperation = 'source-over';
             }
             if (toolTexture == 'normal') {
-                context.lineJoin = "round";
-                context.lineCap = "round";
                 updateCanvas();
             }
             else if (toolTexture == 'brush') {
@@ -80,6 +81,9 @@ function draw(e) {
             } 
             else if (toolTexture == 'blur') {
                 textureBlur(mouseX,mouseY);
+            }
+            else if (toolTexture == 'cross') {
+                textureCross(mouseX,mouseY);
             }
         }
         else if (toolMode == 'stamp') {
@@ -238,6 +242,11 @@ function setToolStamp(e) {
 
 function setSISize() {
     si.clearRect(0, 0, sizeIndicator.width, sizeIndicator.height);
+    si.lineJoin = "round";
+    si.lineCap = "round";
+    var x = 300;
+    var y = 300;
+    var ts = 600;
     if (toolMode == 'brush' || toolMode == 'erase') {
         if (toolTexture == 'normal') {
             sizeIndicator.style.width = toolSize.toString().concat('px'); 
@@ -247,27 +256,37 @@ function setSISize() {
         }
         else if (toolTexture == 'brush') {
             sizeIndicator.style.width = toolSize.toString().concat('px'); 
-            sizeIndicator.style.height = (toolSize*2).toString().concat('px'); 
-            sizeIndicator.style.borderRadius = '0%'; 
-            sizeIndicator.style.backgroundColor = toolColor;
-        }
-        else if (toolTexture == 'roller') {
-            sizeIndicator.style.width = (toolSize*4).toString().concat('px'); 
             sizeIndicator.style.height = toolSize.toString().concat('px'); 
             sizeIndicator.style.borderRadius = '0%'; 
-            sizeIndicator.style.backgroundColor = toolColor;
+            sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
+            si.strokeStyle = toolColor;
+            si.fillStyle = toolColor;
+            var radius = ts * 0.025;
+            si.strokeRect(x+(radius/2)-(ts/4), y+(radius/2)-(ts/2), (ts/2)-radius, ts-radius);
+            si.fillRect(x+(radius/2)-(ts/4), y+(radius/2)-(ts/2), (ts/2)-radius, ts-radius);
+        }
+        else if (toolTexture == 'roller') {
+            sizeIndicator.style.width = toolSize.toString().concat('px'); 
+            sizeIndicator.style.height = toolSize.toString().concat('px'); 
+            sizeIndicator.style.borderRadius = '0%'; 
+            sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
+            si.strokeStyle = toolColor;
+            si.fillStyle = toolColor;
+            var radius = ts * 0.025;
+            si.strokeRect(x+(radius/2)-(ts/2), y+(radius/2)-(ts/8), ts-radius, (ts/4)-radius);
+            si.fillRect(x+(radius/2)-(ts/2), y+(radius/2)-(ts/8), ts-radius, (ts/4)-radius);
         }
         else if (toolTexture == 'spray') {
             sizeIndicator.style.width = toolSize.toString().concat('px'); 
             sizeIndicator.style.height = toolSize.toString().concat('px'); 
             sizeIndicator.style.borderRadius = '50%'; 
             sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
-            var density = toolSize*100;
+            var density = ts*100;
             for (var j = density; j--; ) {
                 var angle = getRandomFloat(0, Math.PI*2);
-                var radius = getRandomFloat(0, toolSize);
+                var radius = getRandomFloat(0, ts*3);
                 si.fillStyle = toolColor;
-                si.fillRect(200 + radius * Math.cos(angle), 200 + radius * Math.sin(angle), 1, 1);
+                si.fillRect(x + radius * Math.cos(angle), y + radius * Math.sin(angle), 1, 1);
             }
         }
         else if (toolTexture == 'blur') {
@@ -276,15 +295,23 @@ function setSISize() {
             sizeIndicator.style.borderRadius = '50%'; 
             sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
             var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",")
-            var radgrad = context.createRadialGradient(200,200,100,200,200,200);
+            var radgrad = si.createRadialGradient(x,y,(ts/4),x,y,(ts/2));
             radgrad.addColorStop(0, rgb.concat("0.4)"));
             radgrad.addColorStop(0.5, rgb.concat("0.2)"));
             radgrad.addColorStop(1, rgb.concat("0)"));
             si.fillStyle = radgrad;
-            si.fillRect(0, 0, 400, 400);
+            si.fillRect(0, 0, ts, ts);
         }
-        else if (toolTexture == 'fur') {
-            console.log('fur');
+        else if (toolTexture == 'cross') {
+            sizeIndicator.style.width = toolSize.toString().concat('px'); 
+            sizeIndicator.style.height = toolSize.toString().concat('px'); 
+            sizeIndicator.style.borderRadius = '0%'; 
+            sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
+            si.fillStyle = toolColor;
+            si.fillRect(x-(ts/2)-(ts/32), y+(ts/8)-(ts/16), ts, ts/16);
+            si.fillRect(x-(ts/2)-(ts/32), y-(ts/8)-(ts/16), ts, ts/16);
+            si.fillRect(x+(ts/8)-(ts/16), y-(ts/2)-(ts/32), ts/16, ts);
+            si.fillRect(x-(ts/8)-(ts/16), y-(ts/2)-(ts/32), ts/16, ts);
         }
     }
     else if (toolMode == 'stamp') {
@@ -300,7 +327,7 @@ function setSISize() {
         sizeIndicator.style.height = imgHeight.toString().concat('px'); 
         sizeIndicator.style.borderRadius = '0%'; 
         sizeIndicator.style.backgroundColor = 'rgba(0,0,0,0)';
-        si.drawImage(stampImgUse,0,0,400,400);
+        si.drawImage(stampImgUse,0,0,ts,ts);
     }
 }
 
@@ -330,18 +357,14 @@ function textureBrush(x,y) {
     var dist = distanceBetween(lastPoint, currentPoint);
     var angle = angleBetween(lastPoint, currentPoint);
 
-    for (var j = 0; j < dist; j+=(toolSize/4)) {
+    for (var j = 0; j < dist; j+=5) {
         x = lastPoint[0] + (Math.sin(angle) * j);
         y = lastPoint[1] + (Math.cos(angle) * j);
-        var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",")
-        var radgrad = context.createRadialGradient(x,y,toolSize/2,x,y,toolSize);
-        radgrad.addColorStop(0, rgb.concat("1)"));
-        radgrad.addColorStop(0.5, rgb.concat("0.75)"));
-        radgrad.addColorStop(1, rgb.concat("0.5)"));
-        context.fillStyle = radgrad;
-        context.lineJoin = "miter";
-        context.lineCap = "butt";
-        context.fillRect(x-(toolSize/2), y-toolSize, toolSize, toolSize*2);
+        context.strokeStyle = toolColor;
+        context.fillStyle = toolColor;
+        var radius = toolSize * 0.025;
+        context.strokeRect(x+(radius/2)-(toolSize/4), y+(radius/2)-(toolSize/2), (toolSize/2)-radius, toolSize-radius);
+        context.fillRect(x+(radius/2)-(toolSize/4), y+(radius/2)-(toolSize/2), (toolSize/2)-radius, toolSize-radius);
     }
     lastPoint = currentPoint;
 }
@@ -354,18 +377,14 @@ function textureRoller(x,y) {
     var dist = distanceBetween(lastPoint, currentPoint);
     var angle = angleBetween(lastPoint, currentPoint);
 
-    for (var j = 0; j < dist; j+=(toolSize/4)) {
+    for (var j = 0; j < dist; j+=5) {
         x = lastPoint[0] + (Math.sin(angle) * j);
         y = lastPoint[1] + (Math.cos(angle) * j);
-        var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",")
-        var radgrad = context.createRadialGradient(x,y,toolSize,x,y,toolSize*2);
-        radgrad.addColorStop(0, rgb.concat("1)"));
-        radgrad.addColorStop(0.5, rgb.concat("0.75)"));
-        radgrad.addColorStop(1, rgb.concat("0.5)"));
-        context.fillStyle = radgrad;
-        context.lineJoin = "miter";
-        context.lineCap = "butt";
-        context.fillRect(x-(toolSize*2), y-(toolSize/2), toolSize*4, toolSize);
+        context.strokeStyle = toolColor;
+        context.fillStyle = toolColor;
+        var radius = toolSize * 0.025;
+        context.strokeRect(x+(radius/2)-(toolSize/2), y+(radius/2)-(toolSize/8), toolSize-radius, (toolSize/4)-radius);
+        context.fillRect(x+(radius/2)-(toolSize/2), y+(radius/2)-(toolSize/8), toolSize-radius, (toolSize/4)-radius);
     }
     lastPoint = currentPoint;
 }
@@ -388,7 +407,7 @@ function textureBlur(x,y) {
     var dist = distanceBetween(lastPoint, currentPoint);
     var angle = angleBetween(lastPoint, currentPoint);
     var blurSize = toolSize / 2;
-    for (var j = 0; j < dist; j+=(blurSize/4)) {
+    for (var j = 0; j < dist; j+=5) {
         x = lastPoint[0] + (Math.sin(angle) * j);
         y = lastPoint[1] + (Math.cos(angle) * j);
         var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",")
@@ -398,6 +417,25 @@ function textureBlur(x,y) {
         radgrad.addColorStop(1, rgb.concat("0)"));
         context.fillStyle = radgrad;
         context.fillRect(x-blurSize, y-blurSize, blurSize*2, blurSize*2);
+    }
+    lastPoint = currentPoint;
+}
+
+function textureCross(x,y) {
+    var currentPoint = [x, y];
+    if (lastPoint == null) {
+        lastPoint = currentPoint;
+    }
+    var dist = distanceBetween(lastPoint, currentPoint);
+    var angle = angleBetween(lastPoint, currentPoint);
+    for (var j = 0; j < dist; j+=1) {
+        x = lastPoint[0] + (Math.sin(angle) * j);
+        y = lastPoint[1] + (Math.cos(angle) * j);
+        context.fillStyle = toolColor;
+        context.fillRect(x-(toolSize/2)-(toolSize/32), y+(toolSize/8)-(toolSize/16), toolSize, toolSize/16);
+        context.fillRect(x-(toolSize/2)-(toolSize/32), y-(toolSize/8)-(toolSize/16), toolSize, toolSize/16);
+        context.fillRect(x+(toolSize/8)-(toolSize/16), y-(toolSize/2)-(toolSize/32), toolSize/16, toolSize);
+        context.fillRect(x-(toolSize/8)-(toolSize/16), y-(toolSize/2)-(toolSize/32), toolSize/16, toolSize);
     }
     lastPoint = currentPoint;
 }
