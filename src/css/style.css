@@ -118,17 +118,24 @@ body {
     display:block;
 }
 
+.grid-size {
+    display: grid;
+    grid-template-rows: 40px auto;
+    justify-content: center;
+    align-content: center;
+    padding-bottom: 10px;
+}
+
 .size-slider {
     width: 400px;
     height: 40px;
 }
 
 #sizeIndicator {
-    background-color: black;
-    margin: 4px auto;
+    background-color: rgba(0,0,0,0);
+    margin: 0px auto;
     width: 20px;
     height: 20px;
-    border-radius: 50%;
 }
 
 .grid-texture {
@@ -154,5 +161,9 @@ body {
     background-image: url(../images/canvas.png);
     background-size: cover;
     touch-action: none;
+}
+
+#canvas:hover {
+    cursor: crosshair;
 }
 

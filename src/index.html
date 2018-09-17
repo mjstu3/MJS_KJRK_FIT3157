@@ -29,8 +29,10 @@
                     <div class="size" onclick="toggleSize()">
                         <i id="iconSize" class="icon fas fa-stream"></i>
                         <div id="dropdownSize" class="dropdown-content dropdown-size">
-                            <input id='sizeSlider' class="size-slider" type='range' value='20' max='400' min='1'/>
-                            <div id="sizeIndicator" class="size-indicator"></div>
+                            <div class="grid-size">
+                                <input id='sizeSlider' class="size-slider" type='range' value='20' max='400' min='1'/>
+                                <canvas id="sizeIndicator" height="400" width="400"></canvas>
+                            </div>
                         </div>
                     </div>
                     <div class="texture active" onclick="toggleTexture()">
@@ -41,8 +43,9 @@
                                 <i class="icon fas fa-brush" data-texture="brush"></i>
                                 <i class="icon fas fa-paint-roller" data-texture="roller"></i>
                                 <i class="icon fas fa-spray-can" data-texture="spray"></i>
-                                <i class="icon fas fa-star-of-life" data-texture="fur"></i>
                                 <i class="icon fas fa-tint" data-texture="blur"></i>
+                                <i class="icon fas fa-star-of-life" data-texture="fur"></i>
+                                
                             </div>
                         </div>
                     </div>
@@ -55,7 +58,7 @@
                             <div class="grid-stamp">
                                 <i class="icon fas fa-keyboard"></i>
                                 <i class="icon fas fa-tint"></i>
-                                <i class="icon fas fa-flag"></i>
+                                <i class="icon fas fa-flag" data-stampsrc="../images/flag_usa.png"></i>
                             </div> 
                         </div>                  
                     </div>
