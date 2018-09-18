@@ -251,6 +251,7 @@ function setToolOpacity() {
     if (document.getElementById("dropdownOpacity").classList.contains("show")) {
         toolOpacity = document.getElementById("opacitySlider").value;
         toolOpacity = toolOpacity/1000;
+        document.getElementById("opacityText").textContent="Brush Opacity: " + Math.round(toolOpacity * 100 * 10) / 10 + "%";
         setSISize();
     
     }
