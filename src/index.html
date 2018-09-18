@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="size" onclick="toggleSize()">
-                        <i id="iconSize" class="icon fas fa-stream"></i>
+                        <i id="iconSize" class="icon fas fa-circle"></i>
                         <div id="dropdownSize" class="dropdown-content dropdown-size">
                             <div class="grid-size">
                                 <input id='sizeSlider' class="size-slider" type='range' value='20' max='600' min='1'/>
@@ -49,8 +49,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fill">
-                        <i class="icon fas fa-fill-drip" data-mode="fill"></i>
+                    <div class="opacity" onclick="toggleOpacity()">
+                        <i id="iconSize" class="icon fas fa-layer-group"></i>
+                        <div id="dropdownOpacity" class="dropdown-content dropdown-opacity">
+                            <div class="grid-size">
+                                <input id='opacitySlider' class="size-slider" type='range' value='1000' max='1000' min='0'/>
+                                <canvas id="opacityIndicator" height="600" width="600"></canvas>
+                            </div>
+                        </div>
                     </div>
                     <div class="stamp" onclick="toggleStamp()">
                         <i class="icon fas fa-stamp" data-mode="stamp"></i>

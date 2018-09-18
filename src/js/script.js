@@ -6,8 +6,10 @@ var si = sizeIndicator.getContext('2d');
 var linePoints = [];
 var toolMode = 'brush';
 var toolSize = 20;
+var toolOpacity = 1;
 var toolColor = '#000000';
 var toolTexture = 'normal';
+
 var stampSrc = '';
 var stampImgUse = new Image();
 var stampImgDisplay = new Image();
@@ -17,11 +19,14 @@ var undoButton = document.querySelector('[data-action=undo]');
 var redoButton = document.querySelector('[data-action=redo]');
 var lastPoint;
 
+
 // Defaults
 context.strokeStyle = "#000000";
 context.lineWidth = 20;
 context.lineJoin = "round";
 context.lineCap = "round";
+context.globalAlpha = 1;
+context.globalCompositionOperation = "source-over";
 
 // Event listeners
 canvas.addEventListener('mousedown', draw);
@@ -33,6 +38,8 @@ window.addEventListener('mousemove', setToolColor);
 window.addEventListener('touchmove', setToolColor);
 window.addEventListener('mousemove', setToolSize);
 window.addEventListener('touchmove', setToolSize);
+window.addEventListener('mousemove', setToolOpacity);
+window.addEventListener('touchmove', setToolOpacity);
 document.querySelector('#dropdownTexture').addEventListener('click', setToolTexture);
 document.querySelector('#dropdownStamp').addEventListener('click', setToolStamp);
 setSISize()
@@ -183,6 +190,11 @@ function toggleTexture() {
     closeOtherDropdowns("dropdownTexture");
 }
 
+function toggleOpacity() {
+    document.getElementById("dropdownOpacity").classList.toggle("show");
+    closeOtherDropdowns("dropdownOpacity");
+}
+
 function toggleStamp() {
     document.getElementById("dropdownStamp").classList.toggle("show");
     closeOtherDropdowns("dropdownStamp");
@@ -224,6 +236,7 @@ function setToolSize() {
     if (document.getElementById("dropdownSize").classList.contains("show")) {
         toolSize = document.getElementById("sizeSlider").value;
         setSISize();
+      
     }
 }
 
@@ -231,6 +244,16 @@ function setToolTexture(e) {
     toolTexture = e.target.dataset.texture || toolTexture;
     document.getElementById("iconTexture").className = e.target.classList;
     setSISize();
+
+}
+
+function setToolOpacity() {
+    if (document.getElementById("dropdownOpacity").classList.contains("show")) {
+        toolOpacity = document.getElementById("opacitySlider").value;
+        toolOpacity = toolOpacity/1000;
+        setSISize();
+    
+    }
 }
 
 function setToolStamp(e) {
@@ -240,14 +263,19 @@ function setToolStamp(e) {
     setSISize();
 }
 
+
 function setSISize() {
+    context.globalAlpha = toolOpacity;
     si.clearRect(0, 0, sizeIndicator.width, sizeIndicator.height);
     si.lineJoin = "round";
     si.lineCap = "round";
     var x = 300;
     var y = 300;
     var ts = 600;
+    
+    
     if (toolMode == 'brush' || toolMode == 'erase') {
+        
         if (toolTexture == 'normal') {
             sizeIndicator.style.width = toolSize.toString().concat('px'); 
             sizeIndicator.style.height = toolSize.toString().concat('px'); 
@@ -333,6 +361,9 @@ function setSISize() {
 
 
 
+
+
+
 function distanceBetween(p1, p2) {
     return Math.sqrt(Math.pow(p2[0] - p1[0], 2) + Math.pow(p2[1] - p1[1], 2));
 }
@@ -349,6 +380,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
+
 function textureBrush(x,y) {
     var currentPoint = [x, y];
     if (lastPoint == null) {
@@ -362,6 +395,7 @@ function textureBrush(x,y) {
         y = lastPoint[1] + (Math.cos(angle) * j);
         context.strokeStyle = toolColor;
         context.fillStyle = toolColor;
+
         var radius = toolSize * 0.025;
         context.strokeRect(x+(radius/2)-(toolSize/4), y+(radius/2)-(toolSize/2), (toolSize/2)-radius, toolSize-radius);
         context.fillRect(x+(radius/2)-(toolSize/4), y+(radius/2)-(toolSize/2), (toolSize/2)-radius, toolSize-radius);
