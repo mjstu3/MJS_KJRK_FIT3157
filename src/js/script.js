@@ -60,7 +60,6 @@ function draw(e) {
         var mouseX = e.pageX - canvas.offsetLeft;
         var mouseY = e.pageY - canvas.offsetTop;
         var mouseDrag = e.type === 'mousemove';
-        context.globalAlpha = toolOpacity;
         if (e.type === 'touchstart' || e.type === 'touchmove') {
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
             mouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -303,7 +302,7 @@ function setSISize() {
     }
     else if (toolMode == 'stamp') {
         if (stampSelected.length == 1) {
-            placeText(0,0,si,ts);
+            placeText(x,y,si,ts);
         }
         else if (stampSelected == 'square') {
             placeSquare(x,y,si,ts);
@@ -338,6 +337,7 @@ function getRandomFloat(min, max) {
 function textureNormal(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
+    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
         ctx.beginPath();
         ctx.arc(x,y,ts/2, 0, Math.PI*2); 
@@ -365,6 +365,7 @@ function textureNormal(x,y,ctx,ts,drag) {
 function textureBrush(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
+    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
         ctx.fillRect(x-(ts/4), y-(ts/2), ts/2, ts);
     } else {
@@ -386,6 +387,7 @@ function textureBrush(x,y,ctx,ts,drag) {
 function textureRoller(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
+    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
         ctx.fillRect(x-(ts/2), y-(ts/8), ts, ts/4);
     } else {
@@ -405,6 +407,7 @@ function textureRoller(x,y,ctx,ts,drag) {
 }
 
 function textureSpray(x,y,ctx,ts) {
+    ctx.globalAlpha = toolOpacity;
     var density = ts*4;
     for (var j = density; j--; ) {
         var angle = getRandomFloat(0, Math.PI*2);
@@ -417,6 +420,7 @@ function textureSpray(x,y,ctx,ts) {
 function textureBlur(x,y,ctx,ts,drag) {
     var blurSize = ts / 2;
     ctx.lineWidth = blurSize;
+    ctx.globalAlpha = toolOpacity/5;
     var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",");
     var radgrad = ctx.createRadialGradient(x,y,blurSize/8,x,y,blurSize);
     radgrad.addColorStop(0, rgb.concat("0.4)"));
@@ -444,12 +448,14 @@ function textureBlur(x,y,ctx,ts,drag) {
 
 function placeText(x,y,ctx,ts) {
     ctx.fillStyle = toolColor;
+    ctx.globalAlpha = toolOpacity;
     ctx.font = ts.toString().concat("pt Stencil-Outline");
     ctx.fillText(stampSelected,x-ts/2,y+ts/2);
 }
 
 function placeSquare(x,y,ctx,ts) {
     ctx.fillStyle = toolColor;
+    ctx.globalAlpha = toolOpacity;
     ctx.lineWidth = ts;
     ctx.fillRect(x-(ts/2), y-(ts/2), ts, ts);
 }
@@ -457,6 +463,7 @@ function placeSquare(x,y,ctx,ts) {
 function placeStar(x,y,ctx,ts,n) {
     ctx.strokeStyle = toolColor;
     ctx.fillStyle = toolColor;
+    ctx.globalAlpha = toolOpacity;
     ctx.lineWidth = ts/10;
     var i;
     var angle = Math.PI / 2 * 3;
@@ -485,6 +492,7 @@ function placeStar(x,y,ctx,ts,n) {
 
 function placeHash(x,y,ctx,ts) {
     ctx.fillStyle = toolColor;
+    ctx.globalAlpha = toolOpacity;
     ctx.lineWidth = ts;
     ctx.fillRect(x-(ts/2)-(ts/32), y+(ts/8)-(ts/16), ts, ts/16);
     ctx.fillRect(x-(ts/2)-(ts/32), y-(ts/8)-(ts/16), ts, ts/16);
@@ -493,6 +501,7 @@ function placeHash(x,y,ctx,ts) {
 }
 
 function placeFlag(x,y,ctx,ts) {
+    ctx.globalAlpha = toolOpacity;
     var imgWidth, imgHeight;
     if (Math.max(stampImgUse.width,stampImgUse.height) == stampImgUse.width) {
         imgWidth = ts;
