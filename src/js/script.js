@@ -42,6 +42,9 @@ window.addEventListener('mousedown', closeAllDropdowns);
 window.addEventListener('touchstart', closeAllDropdowns);
 document.querySelector('#dropdownTexture').addEventListener('click', setToolTexture);
 document.querySelector('#dropdownStamp').addEventListener('click', setToolStamp);
+document.querySelector('#dropdownChar').addEventListener('click', closeStampsDropdown);
+document.querySelector('#dropdownShape').addEventListener('click', closeStampsDropdown);
+document.querySelector('#dropdownFlag').addEventListener('click', closeStampsDropdown);
 
 // Functions
 function clearCanvas() {
@@ -89,6 +92,7 @@ function draw(e) {
             }
         }
         else if (toolMode == 'stamp' && e.type !== 'touchmove' && e.type !== 'mousemove') {
+            context.globalCompositeOperation = 'source-over';
             if (stampSelected.length == 1) {
                 placeText(mouseX,mouseY,context,toolSize);
             }
@@ -252,6 +256,7 @@ function setToolTexture(e) {
     document.getElementById("iconTexture").className = e.target.classList;
     document.getElementById("iconTexture").classList.add("dropdown-icon");
     setSISize();
+    closeOtherDropdowns(null,null);
 }
 
 function setToolOpacity() {
@@ -268,6 +273,10 @@ function setToolStamp(e) {
     stampImgUse.src = stampSrc;
     stampImgDisplay.src = stampSrc;
     setSISize();
+}
+
+function closeStampsDropdown() {
+    closeOtherDropdowns(null,null);
 }
 
 function setSISize() {
