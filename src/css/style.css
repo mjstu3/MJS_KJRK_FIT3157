@@ -13,14 +13,33 @@ body, html {
     src: url(../fonts/Hansief.otf);
 }
 
-h1, h2, h3, h4, h5, h6 {
+@font-face {
+    font-family: 'Stencil-Outline';
+    src: url(../fonts/Stencil-Outline.ttf);
+}
+
+h1, p {
     font-family: 'Hansief';
     text-transform: uppercase;
 }
 
-h1{
+h1 {
     color: #ffaaa5;
     font-size: 3.6vw;
+}
+
+h2 {
+    font-family: 'Stencil-Outline';
+    color: white;
+    font-size: 1.8vw;
+}
+
+h2:active {
+    color: lightgray;
+}
+
+p {
+    color: white;
 }
 
 body {
@@ -88,17 +107,22 @@ body {
 .icon {
     padding: 0.5vh;
     color: white;
-    text-decoration: none;
     font-size: 3.6vw;
-    transition: all 0.2s;
+    transition: all 0.5s;
 }
 
 #iconColor {
     color: black;
 }
 
-.toolbar .active > .icon {
+.material-icons.mi { font-size: 4.3vw; }
+
+.active > .icon {
     color: #ffaaa5;
+}
+
+.icon:active {
+    color: lightgray;
 }
 
 .toolbar .color {
@@ -106,24 +130,23 @@ body {
     display: inline-block;
 }
 
-.dropdown-content {
+.dropdown {
     display: none;
     position: absolute;
     background-color: grey;
     z-index: 1;
+}
+
+.dropdown-content {
     margin-top: 15px;
 }
 
-.show {
-    display:block;
+.dropdown-child {
+    margin-top: 120px;
 }
 
-.grid-size {
-    display: grid;
-    grid-template-rows: 40px auto;
-    justify-content: center;
-    align-content: center;
-    padding-bottom: 10px;
+.show {
+    display: block;
 }
 
 .size-slider {
@@ -132,40 +155,69 @@ body {
 }
 
 .opacity-slider {
-    width: 600px;
+    width: 300px;
     height: 40px;
 }
 
 #sizeIndicator {
     background-color: rgba(0,0,0,0);
     margin: 0px auto;
-    width: 20px;
-    height: 20px;
+    width: 50px;
+    height: 50px;
 }
 
-#opacityIndicator {
-    background-color: rgba(0,0,0,0);
-    margin: 0px auto;
-    width: 20px;
-    height: 20px;
+.grid {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.grid-standard {
+    grid-template-rows: 40px auto;
+    padding-bottom: 10px;
 }
 
 .grid-texture {
-    display: grid;
     padding-top: 15px;
+    padding-bottom: 15px;
     grid-template-columns: 100px 100px 100px;
-    grid-template-rows: 100px 100px;
-    justify-content: center;
-    align-content: center;
+    grid-template-rows: 80px 80px;
 }
 
 .grid-stamp {
-    display: grid;
     padding-top: 15px;
+    padding-bottom: 15px;
     grid-template-columns: 100px 100px 100px;
-    grid-template-rows: 100px;
-    justify-content: center;
-    align-content: center;
+    grid-template-rows: 80px;
+}
+
+.grid-char {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    grid-template-columns: 50px 50px 50px 50px 50px 50px;
+    grid-template-rows: 40px 40px 40px 40px 40px 40px;
+}
+
+.grid-shape {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    grid-template-columns: 75px 75px 75px 75px;
+    grid-template-rows: 75px;
+}
+
+.grid-shape .icon {
+    font-size: 3vw;
+}
+
+.grid-flag {
+    grid-template-columns: 75px 75px 75px 75px;
+    grid-template-rows: 40px;
+}
+
+.grid-flag > img {
+    margin: auto;
+    width: 3vw;
+    height: 1.5vw;
 }
 
 #canvas {

@@ -5,12 +5,11 @@
     <title>Canvas Drawing App</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel='stylesheet' href='css/spectrum.css' />
 </head>
 <body>
-	
     <div id="app">
-  
         <div class="accent accent-yellow"></div>
         <div class="accent accent-blue"></div>
         <div class="accent accent-red"></div>
@@ -20,51 +19,105 @@
                     <h1>JASPER JOHNS KIOSK</h1>
                 </div>
                 <div class="toolbar" id="toolbar">
-                    <div class="color" onclick="toggleColors()">
-                        <i id="iconColor" class="icon fas fa-square"></i>
-                        <div id="dropdownColor" class="dropdown-content dropdown-color">
+                    <div class="color">
+                        <i id="iconColor" class="icon dropdown-icon fas fa-square" onclick="toggleDropdown(this)"></i>
+                        <div id="dropdownColor" class="dropdown dropdown-content">
                             <input id="colorpicker"/>
                         </div>
                     </div>
-                    <div class="size" onclick="toggleSize()">
-                        <i id="iconSize" class="icon fas fa-circle"></i>
-                        <div id="dropdownSize" class="dropdown-content dropdown-size">
-                            <div class="grid-size">
-                                <input id='sizeSlider' class="size-slider" type='range' value='20' max='600' min='1'/>
+                    <div class="size">
+                        <i id="iconSize" class="icon dropdown-icon material-icons mi" onclick="toggleDropdown(this)">line_weight</i>
+                        <div id="dropdownSize" class="dropdown dropdown-content">
+                            <div class="grid grid-standard">
+                                <input id='sizeSlider' class="size-slider" type='range' value='50' max='600' min='1'/>
                                 <canvas id="sizeIndicator" height="600" width="600"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="texture active" onclick="toggleTexture()">
-                        <i id="iconTexture" class="icon fas fa-paint-brush" data-mode="brush"></i>
-                        <div id="dropdownTexture" class="dropdown-content dropdown-texture">
-                            <div class="grid-texture">
+                    <div class="opacity">
+                        <i id="iconOpacity" class="icon dropdown-icon material-icons mi" onclick="toggleDropdown(this)">opacity</i>
+                        <div id="dropdownOpacity" class="dropdown dropdown-content">
+                            <div class="grid grid-standard">
+                                <input id='opacitySlider' class="opacity-slider" type='range' value='100' max='100' min='0'/>
+                                <p id="opacityText">Opacity: 100%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="texture active">
+                        <i id="iconTexture" class="icon dropdown-icon fas fa-paint-brush" data-mode="brush" onclick="toggleDropdown(this)"></i>
+                        <div id="dropdownTexture" class="dropdown dropdown-content">
+                            <div class="grid grid-texture">
                                 <i class="icon fas fa-paint-brush" data-texture="normal"></i>
                                 <i class="icon fas fa-brush" data-texture="brush"></i>
                                 <i class="icon fas fa-paint-roller" data-texture="roller"></i>
                                 <i class="icon fas fa-spray-can" data-texture="spray"></i>
                                 <i class="icon fas fa-highlighter" data-texture="blur"></i>
-                                <i class="icon fab fa-slack-hash" data-texture="cross"></i>
-                                
                             </div>
                         </div>
                     </div>
-                    <div class="opacity" onclick="toggleOpacity()">
-                        <i id="iconSize" class="icon fas fa-layer-group"></i>
-                        <div id="dropdownOpacity" class="dropdown-content dropdown-opacity">
-                            <div class="grid-size">
-                                <input id='opacitySlider' class="size-slider" type='range' value='1000' max='1000' min='0'/>
-                                <span id="opacityText"> Brush Opacity: 100% </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="stamp" onclick="toggleStamp()">
-                        <i class="icon fas fa-stamp" data-mode="stamp"></i>
-                        <div id="dropdownStamp" class="dropdown-content dropdown-stamp">
-                            <div class="grid-stamp">
-                                <i class="icon fas fa-keyboard"></i>
-                                <i class="icon fas fa-tint"></i>
-                                <i class="icon fas fa-flag" data-stampsrc="./images/flag_usa.png"></i>
+                    <div class="stamp">
+                        <i class="icon dropdown-icon fas fa-stamp" data-mode="stamp" onclick="toggleDropdown(this)"></i>
+                        <div id="dropdownStamp" class="dropdown dropdown-content">
+                            <div class="grid grid-stamp">
+                                <i id="iconChar" class="icon dropdown-icon fas fa-subscript" onclick="toggleChildDropdown(this)"></i>
+                                <div id="dropdownChar" class="dropdown dropdown-child">
+                                    <div class="grid grid-char">
+                                        <h2 data-stamp="A">A</h2>
+                                        <h2 data-stamp="B">B</h2>
+                                        <h2 data-stamp="C">C</h2>
+                                        <h2 data-stamp="D">D</h2>
+                                        <h2 data-stamp="E">E</h2>
+                                        <h2 data-stamp="F">F</h2>
+                                        <h2 data-stamp="G">G</h2>
+                                        <h2 data-stamp="H">H</h2>
+                                        <h2 data-stamp="I">I</h2>
+                                        <h2 data-stamp="J">J</h2>
+                                        <h2 data-stamp="K">K</h2>
+                                        <h2 data-stamp="L">L</h2>
+                                        <h2 data-stamp="M">M</h2>
+                                        <h2 data-stamp="N">N</h2>
+                                        <h2 data-stamp="O">O</h2>
+                                        <h2 data-stamp="P">P</h2>
+                                        <h2 data-stamp="Q">Q</h2>
+                                        <h2 data-stamp="R">R</h2>
+                                        <h2 data-stamp="S">S</h2>
+                                        <h2 data-stamp="T">T</h2>
+                                        <h2 data-stamp="U">U</h2>
+                                        <h2 data-stamp="V">V</h2>
+                                        <h2 data-stamp="W">W</h2>
+                                        <h2 data-stamp="X">X</h2>
+                                        <h2 data-stamp="Y">Y</h2>
+                                        <h2 data-stamp="Z">Z</h2>
+                                        <h2 data-stamp="0">0</h2>
+                                        <h2 data-stamp="1">1</h2>
+                                        <h2 data-stamp="2">2</h2>
+                                        <h2 data-stamp="3">3</h2>
+                                        <h2 data-stamp="4">4</h2>
+                                        <h2 data-stamp="5">5</h2>
+                                        <h2 data-stamp="6">6</h2>
+                                        <h2 data-stamp="7">7</h2>
+                                        <h2 data-stamp="8">8</h2>
+                                        <h2 data-stamp="9">9</h2>
+                                    </div>
+                                </div>
+                                <i id="iconShape" class="icon dropdown-icon fas fa-shapes" onclick="toggleChildDropdown(this)"></i>
+                                <div id="dropdownShape" class="dropdown dropdown-child">
+                                    <div class="grid grid-shape">
+                                        <i class="icon fas fa-square-full" data-stamp="square"></i>
+                                        <i class="icon fas fa-star" data-stamp="star5"></i>
+                                        <i class="icon fas fa-haykal" data-stamp="star9"></i>
+                                        <i class="icon fab fa-slack-hash" data-stamp="hash"></i>
+                                    </div>
+                                </div>
+                                <i id="iconFlag" class="icon dropdown-icon fas fa-flag" onclick="toggleChildDropdown(this)"></i>
+                                <div id="dropdownFlag" class="dropdown dropdown-child">
+                                    <div class="grid grid-flag">
+                                        <img src="images/flag_australia.png" data-stamp="flag" data-stampsrc="./images/flag_australia.png">
+                                        <img src="images/flag_canada.png" data-stamp="flag" data-stampsrc="./images/flag_canada.png">
+                                        <img src="images/flag_uk.png" data-stamp="flag" data-stampsrc="./images/flag_uk.png">
+                                        <img src="images/flag_usa.png" data-stamp="flag" data-stampsrc="./images/flag_usa.png">
+                                    </div>
+                                </div>
                             </div> 
                         </div>                  
                     </div>
@@ -81,7 +134,7 @@
                         <i class="icon far fa-trash-alt" data-action="delete"></i>
                     </div>
                     <div class="save">
-                        <i class="icon far fa-save" data-action="save"></i>
+                        <a href="#" id="save" download="jasper-johns-capture.png"><i class="icon far fa-save" data-action="save"></i></a>
                     </div>
                 </div>
             </div>
@@ -90,12 +143,9 @@
         <div class="accent accent-red"></div>
         <div class="accent accent-blue"></div>
         <div class="accent accent-yellow"></div>
-        
     </div>
-  
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script type="text/javascript" src='js/spectrum.js'></script>
-    
 </body>
 </html>
