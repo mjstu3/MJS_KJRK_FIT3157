@@ -291,22 +291,30 @@ function setSISize() {
     var y = 300;
     var ts = 600;
     si.lineWidth = ts;
-    var radius;
+    var radius, i;
     if (toolMode == 'brush' || toolMode == 'erase') {
         if (toolTexture == 'normal') {
-            textureNormal(x,y,si,ts,false);
+            for (i = 0; i < 5; i++) {
+                textureNormal(x,y,si,ts,false);
+            }
         }
         else if (toolTexture == 'brush') {
-            textureBrush(x,y,si,ts,false);
+            for (i = 0; i < 5; i++) {
+                textureBrush(x,y,si,ts,false);
+            }
         }
         else if (toolTexture == 'roller') {
-            textureRoller(x,y,si,ts,false);
+            for (i = 0; i < 5; i++) {
+                textureRoller(x,y,si,ts,false);
+            }
         }
         else if (toolTexture == 'spray') {
             textureSpray(x,y,si,ts);
         }
         else if (toolTexture == 'blur') {
-            textureBlur(x,y,si,ts,false);
+            for (i = 0; i < 5; i++) {
+                textureBlur(x,y,si,ts,false);
+            }
         }
     }
     else if (toolMode == 'stamp') {
@@ -346,13 +354,14 @@ function getRandomFloat(min, max) {
 function textureNormal(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
-    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
+        ctx.globalAlpha = toolOpacity;
         ctx.beginPath();
         ctx.arc(x,y,ts/2, 0, Math.PI*2); 
         ctx.closePath();
         ctx.fill();
     } else {
+        ctx.globalAlpha = toolOpacity/10;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
@@ -374,10 +383,11 @@ function textureNormal(x,y,ctx,ts,drag) {
 function textureBrush(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
-    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
+        ctx.globalAlpha = toolOpacity;
         ctx.fillRect(x-(ts/4), y-(ts/2), ts/2, ts);
     } else {
+        ctx.globalAlpha = toolOpacity/10;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
@@ -396,10 +406,11 @@ function textureBrush(x,y,ctx,ts,drag) {
 function textureRoller(x,y,ctx,ts,drag) {
     ctx.fillStyle = toolColor;
     ctx.lineWidth = ts;
-    ctx.globalAlpha = toolOpacity/5;
     if (!drag) {
+        ctx.globalAlpha = toolOpacity;
         ctx.fillRect(x-(ts/2), y-(ts/8), ts, ts/4);
     } else {
+        ctx.globalAlpha = toolOpacity/10;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
@@ -429,16 +440,17 @@ function textureSpray(x,y,ctx,ts) {
 function textureBlur(x,y,ctx,ts,drag) {
     var blurSize = ts / 2;
     ctx.lineWidth = blurSize;
-    ctx.globalAlpha = toolOpacity/5;
     var rgb = "rgba(".concat($("#colorpicker").spectrum("get")._r,",",$("#colorpicker").spectrum("get")._g,",",$("#colorpicker").spectrum("get")._b,",");
     var radgrad = ctx.createRadialGradient(x,y,blurSize/8,x,y,blurSize);
     radgrad.addColorStop(0, rgb.concat("0.4)"));
     radgrad.addColorStop(0.5, rgb.concat("0.2)"));
     radgrad.addColorStop(1, rgb.concat("0)"));
     if (!drag) {
+        ctx.globalAlpha = toolOpacity;
         ctx.fillStyle = radgrad;
         ctx.fillRect(x-blurSize, y-blurSize, blurSize*2, blurSize*2);
     } else {
+        ctx.globalAlpha = toolOpacity/5;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
