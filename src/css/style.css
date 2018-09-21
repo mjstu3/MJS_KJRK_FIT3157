@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     user-select: none;
+    touch-action: none;
 }
 
 body, html {
@@ -117,6 +118,8 @@ body {
 
 .material-icons.mi { font-size: 4.3vw; }
 
+.material-icons.mic { font-size: 3.6vw; }
+
 .active > .icon {
     color: #ffaaa5;
 }
@@ -187,7 +190,7 @@ body {
 .grid-stamp {
     padding-top: 15px;
     padding-bottom: 15px;
-    grid-template-columns: 100px 100px 100px;
+    grid-template-columns: 150px 150px;
     grid-template-rows: 80px;
 }
 
@@ -201,33 +204,20 @@ body {
 .grid-shape {
     padding-top: 15px;
     padding-bottom: 15px;
-    grid-template-columns: 75px 75px 75px 75px;
-    grid-template-rows: 75px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 75px 75px;
 }
 
 .grid-shape .icon {
     font-size: 3vw;
 }
 
-.grid-flag {
-    grid-template-columns: 75px 75px 75px 75px;
-    grid-template-rows: 40px;
-}
-
-.grid-flag > img {
-    margin: auto;
-    width: 3vw;
-    height: 1.5vw;
-}
-
 #canvas {
     background-color: white;
     background-image: url(../images/canvas.png);
     background-size: cover;
-    touch-action: none;
 }
 
 #canvas:hover {
     cursor: crosshair;
 }
-

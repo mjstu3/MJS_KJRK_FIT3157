@@ -9,9 +9,6 @@ var toolSize = 50;
 var toolOpacity = 1;
 var toolColor = '#000000';
 var toolTexture = 'normal';
-var stampSrc = '';
-var stampImgUse = new Image();
-var stampImgDisplay = new Image();
 var stampSelected = 'A';
 var canvasState = [];
 var redoBuffer = [];
@@ -41,12 +38,11 @@ window.addEventListener('touchmove', setToolOpacity);
 window.addEventListener('mousedown', closeAllDropdowns);
 window.addEventListener('touchstart', closeAllDropdowns);
 document.querySelector('#dropdownTexture').addEventListener('click', setToolTexture);
-document.querySelector('#dropdownStamp').addEventListener('click', setToolStamp);
 document.querySelector('#dropdownChar').addEventListener('click', closeStampsDropdown);
 document.querySelector('#dropdownShape').addEventListener('click', closeStampsDropdown);
-document.querySelector('#dropdownFlag').addEventListener('click', closeStampsDropdown);
 
 // Functions
+
 function clearCanvas() {
     var result = confirm( 'Are you sure you want to delete the picture?' );
     if (result) {
@@ -97,7 +93,13 @@ function draw(e) {
                 placeText(mouseX,mouseY,context,toolSize);
             }
             else if (stampSelected == 'square') {
-                placeSquare(mouseX,mouseY,context,toolSize);
+                placeRect(mouseX,mouseY,context,toolSize,0);
+            }
+            else if (stampSelected == 'rect1') {
+                placeRect(mouseX,mouseY,context,toolSize,1);
+            }
+            else if (stampSelected == 'rect2') {
+                placeRect(mouseX,mouseY,context,toolSize,2);
             }
             else if (stampSelected == 'star5') {
                 placeStar(mouseX,mouseY,context,toolSize,5);
@@ -107,9 +109,6 @@ function draw(e) {
             }
             else if (stampSelected == 'hash') {
                 placeHash(mouseX,mouseY,context,toolSize);
-            }
-            else if (stampSelected == 'flag') {
-                placeFlag(mouseX,mouseY,context,toolSize);
             }
         }
     }
@@ -161,11 +160,11 @@ function selectTool(e) {
     if (e.target.dataset.mode) highlightButton(e.target);
     toolMode = e.target.dataset.mode || toolMode;
     stampSelected = e.target.dataset.stamp || stampSelected;
-    stampSrc = e.target.dataset.stampsrc || stampSrc;
     if (e.target.dataset.action == 'undo') undoState();
     if (e.target.dataset.action == 'redo') redoState();
     if (e.target.dataset.action == 'delete') clearCanvas();
     if (e.target.dataset.action == 'save') saveCanvas();
+    setSISize();
 }
 
 function highlightButton(button) {
@@ -187,9 +186,6 @@ function toggleChildDropdown(e) {
     }
     else if (e.id == "iconShape") {
         dropdownID = "dropdownShape";
-    }
-    else if (e.id == "iconFlag") {
-        dropdownID = "dropdownFlag";
     }
     document.getElementById(dropdownID).classList.toggle("show");
     closeOtherDropdowns(dropdownID, "child");
@@ -218,16 +214,16 @@ function closeOtherDropdowns(current, type) {
 
 function closeAllDropdowns(e) {
     var t = e.target;
-    while(t) {
-        if (t.classList != null) {
-            var i;
-            for (i = 0; i < t.classList.length; i++) {
-                if (t.classList[i] === "dropdown-content") {
+    if (!t.classList.contains("dropdown-child")) {
+        while(t) {
+            if (t.classList != null) {
+                var i;
+                if (t.classList.contains("dropdown-content")) {
                     return;
                 }
             }
-        }
-        t = t.parentNode;
+            t = t.parentNode;
+        }      
     }
     if (e.target.classList.contains('dropdown-icon')) {
         closeOtherDropdowns(e.target.parentNode.childNodes[3].id, null);
@@ -266,13 +262,6 @@ function setToolOpacity() {
         document.getElementById("opacityText").textContent="Opacity: " + Math.round(toolOpacity * 100) + "%";
         setSISize();
     }
-}
-
-function setToolStamp(e) {
-    stampSrc = e.target.dataset.stampsrc || stampSrc;
-    stampImgUse.src = stampSrc;
-    stampImgDisplay.src = stampSrc;
-    setSISize();
 }
 
 function closeStampsDropdown() {
@@ -322,7 +311,13 @@ function setSISize() {
             placeText(x,y,si,ts);
         }
         else if (stampSelected == 'square') {
-            placeSquare(x,y,si,ts);
+            placeRect(x,y,si,ts,0);
+        }
+        else if (stampSelected == 'rect1') {
+            placeRect(x,y,si,ts,1);
+        }
+        else if (stampSelected == 'rect2') {
+            placeRect(x,y,si,ts,2);
         }
         else if (stampSelected == 'star5') {
             placeStar(x,y,si,ts,5);
@@ -332,9 +327,6 @@ function setSISize() {
         }
         else if (stampSelected == 'hash') {
             placeHash(x,y,si,ts);
-        }
-        else if (stampSelected == 'flag') {
-            placeFlag(x,y,si,ts);
         }
     }
 }
@@ -427,6 +419,7 @@ function textureRoller(x,y,ctx,ts,drag) {
 }
 
 function textureSpray(x,y,ctx,ts) {
+    ctx.lineWidth = ts;
     ctx.globalAlpha = toolOpacity;
     var density = ts*4;
     for (var j = density; j--; ) {
@@ -474,11 +467,21 @@ function placeText(x,y,ctx,ts) {
     ctx.fillText(stampSelected,x-ts/2,y+ts/2);
 }
 
-function placeSquare(x,y,ctx,ts) {
+function placeRect(x,y,ctx,ts,n) {
     ctx.fillStyle = toolColor;
     ctx.globalAlpha = toolOpacity;
-    ctx.lineWidth = ts;
-    ctx.fillRect(x-(ts/2), y-(ts/2), ts, ts);
+    ctx.lineWidth = ts/10;
+    ctx.beginPath();
+    if (n == 0) {
+        ctx.rect(x-(ts/2), y-(ts/2), ts, ts);
+    }
+    else if (n == 1) {
+        ctx.rect(x-(ts/2), y-(ts/4), ts, ts/2);
+    }
+    else if (n == 2) {
+        ctx.rect(x-(ts/4), y-(ts/2), ts/2, ts);
+    }
+    ctx.stroke();
 }
 
 function placeStar(x,y,ctx,ts,n) {
@@ -508,7 +511,6 @@ function placeStar(x,y,ctx,ts,n) {
     ctx.lineTo(x, y-outer)
     ctx.closePath();
     ctx.stroke();
-    ctx.fill();
 }
 
 function placeHash(x,y,ctx,ts) {
@@ -520,20 +522,6 @@ function placeHash(x,y,ctx,ts) {
     ctx.fillRect(x+(ts/8)-(ts/16), y-(ts/2)-(ts/32), ts/16, ts);
     ctx.fillRect(x-(ts/8)-(ts/16), y-(ts/2)-(ts/32), ts/16, ts);
 }
-
-function placeFlag(x,y,ctx,ts) {
-    ctx.globalAlpha = toolOpacity;
-    var imgWidth, imgHeight;
-    if (Math.max(stampImgUse.width,stampImgUse.height) == stampImgUse.width) {
-        imgWidth = ts;
-        imgHeight = imgWidth * (stampImgUse.height / stampImgUse.width);
-    } else {
-        imgHeight = ts;
-        imgWidth = imgHeight * (stampImgUse.width / stampImgUse.height);
-    }
-    ctx.drawImage(stampImgUse,x-(imgWidth/2),y-(imgHeight/2),imgWidth,imgHeight);
-}
-
 
 // jquery for spectrum color tool
 
