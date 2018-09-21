@@ -387,7 +387,7 @@ function textureBrush(x,y,ctx,ts,drag) {
         ctx.globalAlpha = toolOpacity;
         ctx.fillRect(x-(ts/4), y-(ts/2), ts/2, ts);
     } else {
-        ctx.globalAlpha = toolOpacity/10;
+        ctx.globalAlpha = toolOpacity/5;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
@@ -410,7 +410,7 @@ function textureRoller(x,y,ctx,ts,drag) {
         ctx.globalAlpha = toolOpacity;
         ctx.fillRect(x-(ts/2), y-(ts/8), ts, ts/4);
     } else {
-        ctx.globalAlpha = toolOpacity/10;
+        ctx.globalAlpha = toolOpacity/5;
         var currentPoint = [x, y];
         if (lastPoint == null) {
             lastPoint = currentPoint;
