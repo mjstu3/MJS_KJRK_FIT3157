@@ -49,6 +49,10 @@ ColsVisible_frmTableEditor.listForeignKeys<|||>1<|||>0,1,2,3,4,5
 ColPositions_frmTableEditor.listForeignKeys<|||>1<|||>0,1,2,3,4,5
 ColSort_frmTableEditor.listForeignKeys<|||>1<|||>-1,0
 MainWinLeft<|||>3<|||>89
+ColWidths_UserManagerForm.listUsers<|||>1<|||>96,80
+ColsVisible_UserManagerForm.listUsers<|||>1<|||>0,1
+ColPositions_UserManagerForm.listUsers<|||>1<|||>0,1
+ColSort_UserManagerForm.listUsers<|||>1<|||>0,0
 Servers\Laragon\SessionCreated<|||>1<|||>2017-02-14 13:41:54
 Servers\Laragon\Host<|||>1<|||>localhost
 Servers\Laragon\WindowsAuth<|||>3<|||>0
@@ -78,8 +82,8 @@ Servers\Laragon\SSL_Cert<|||>1<|||>
 Servers\Laragon\SSL_CA<|||>1<|||>
 Servers\Laragon\SSL_Cipher<|||>1<|||>
 Servers\Laragon\RefusedCount<|||>3<|||>4
-Servers\Laragon\ServerVersionFull<|||>1<|||>5.7.17 - MySQL Community Server (GPL)
-Servers\Laragon\ConnectCount<|||>3<|||>3
-Servers\Laragon\ServerVersion<|||>3<|||>50717
-Servers\Laragon\LastConnect<|||>1<|||>2017-06-25 11:11:16
+Servers\Laragon\ServerVersionFull<|||>1<|||>5.1.72-community - MySQL Community Server (GPL)
+Servers\Laragon\ConnectCount<|||>3<|||>4
+Servers\Laragon\ServerVersion<|||>3<|||>50172
+Servers\Laragon\LastConnect<|||>1<|||>2018-10-14 17:13:31
 Servers\Laragon\lastUsedDB<|||>1<|||>

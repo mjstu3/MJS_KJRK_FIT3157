@@ -1,0 +1,4 @@
+2018-10-14 17:34:57: Graceful shutdown failed!!! Did you change the root's password? - trying to force it shutdown...
+ERROR: E:\2018\FIT3157\A02+A03\MJS_KJRK_FIT3157\A3\laragon\bin\mysql\mysql-5.1.72-win32\bin\mysqladmin: connect to server at 'localhost' failed
+error: 'Access denied for user 'root'@'localhost' (using password: NO)'
+
