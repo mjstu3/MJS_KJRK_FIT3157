@@ -2,3 +2,11 @@
 181014 17:12:06  InnoDB: Initializing buffer pool, size = 8.0M
 181014 17:12:06  InnoDB: Completed initialization of buffer pool
 181014 17:12:06  InnoDB: Started; log sequence number 0 44233
+181014 20:33:49 [Note] Plugin 'FEDERATED' is disabled.
+181014 20:33:49  InnoDB: Initializing buffer pool, size = 8.0M
+181014 20:33:49  InnoDB: Completed initialization of buffer pool
+181014 20:33:50  InnoDB: Started; log sequence number 0 44233
+181014 20:34:48 [Note] Plugin 'FEDERATED' is disabled.
+181014 20:34:49  InnoDB: Initializing buffer pool, size = 8.0M
+181014 20:34:49  InnoDB: Completed initialization of buffer pool
+181014 20:34:49  InnoDB: Started; log sequence number 0 44233
